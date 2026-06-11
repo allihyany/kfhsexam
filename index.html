@@ -18,34 +18,95 @@
       --muted: #667085;
       --border: #DCE9E2;
       --white: #FFFFFF;
+      --surface: rgba(255,255,255,0.97);
+      --card: #FFFFFF;
+      --card-soft: #F8FCFA;
+      --line: #EEF4F0;
+      --input-bg: #FFFFFF;
       --danger: #C0392B;
+      --danger-bg: #FDF0EE;
+      --danger-border: #F5C6C0;
+      --body-bg:
+        radial-gradient(circle at top right, rgba(176,141,44,0.20), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(0,108,53,0.18), transparent 28%),
+        linear-gradient(135deg, #F8FCFA 0%, #DDEEE6 48%, #CFE4D9 100%);
+      --card-shadow: 0 24px 70px rgba(0, 76, 42, 0.18);
+      --small-shadow: 0 12px 30px rgba(0, 76, 42, 0.08);
+    }
+
+    body[data-theme="dark"] {
+      --moe-green: #18A765;
+      --moe-green-dark: #BFF1D8;
+      --moe-green-light: rgba(24,167,101,0.14);
+      --moe-green-lighter: rgba(24,167,101,0.09);
+      --moe-gold: #D8B95D;
+      --moe-gold-light: rgba(216,185,93,0.14);
+      --text: #F4F7F5;
+      --muted: #B6C5BE;
+      --border: rgba(191,241,216,0.18);
+      --white: #111B17;
+      --surface: rgba(15, 27, 23, 0.96);
+      --card: #13231D;
+      --card-soft: #0F1B17;
+      --line: rgba(255,255,255,0.08);
+      --input-bg: #0B1511;
+      --danger: #FFB4A9;
+      --danger-bg: rgba(192,57,43,0.12);
+      --danger-border: rgba(255,180,169,0.28);
+      --body-bg:
+        radial-gradient(circle at top right, rgba(216,185,93,0.16), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(24,167,101,0.18), transparent 28%),
+        linear-gradient(135deg, #08110E 0%, #10271D 52%, #07100D 100%);
+      --card-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+      --small-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
     }
 
     body {
       font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-      background:
-        radial-gradient(circle at top right, rgba(176,141,44,0.20), transparent 30%),
-        radial-gradient(circle at bottom left, rgba(0,108,53,0.18), transparent 28%),
-        linear-gradient(135deg, #F8FCFA 0%, #DDEEE6 48%, #CFE4D9 100%);
+      background: var(--body-bg);
       min-height: 100vh;
       padding: 22px;
       color: var(--text);
       display: flex;
       justify-content: center;
       align-items: flex-start;
+      transition: background 0.25s ease, color 0.25s ease;
     }
 
     .container {
-      background: rgba(255,255,255,0.97);
+      background: var(--surface);
       border-radius: 28px;
       padding: 32px;
       width: 100%;
       max-width: 980px;
-      box-shadow: 0 24px 70px rgba(0, 76, 42, 0.18);
-      border: 1px solid rgba(0,108,53,0.13);
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--border);
       position: relative;
       overflow: hidden;
     }
+
+    .theme-toggle {
+      position: absolute;
+      top: 22px;
+      left: 22px;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--moe-green-dark);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-family: inherit;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: var(--small-shadow);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .theme-toggle:hover { transform: translateY(-1px); }
+    .theme-icon { font-size: 1rem; line-height: 1; }
 
     .container::before {
       content: "";
@@ -134,8 +195,8 @@
       border: 1px solid var(--border);
       border-radius: 22px;
       overflow: hidden;
-      background: #fff;
-      box-shadow: 0 12px 30px rgba(0, 76, 42, 0.08);
+      background: var(--card);
+      box-shadow: var(--small-shadow);
     }
 
     .schedule-title {
@@ -160,8 +221,8 @@
     th, td {
       padding: 15px 12px;
       text-align: center;
-      border-bottom: 1px solid #EEF4F0;
-      border-left: 1px solid #EEF4F0;
+      border-bottom: 1px solid var(--line);
+      border-left: 1px solid var(--line);
       vertical-align: middle;
     }
 
@@ -177,7 +238,7 @@
     }
 
     tbody th {
-      background: #F8FCFA;
+      background: var(--card-soft);
       color: var(--moe-green-dark);
       font-weight: 900;
       width: 150px;
@@ -201,11 +262,11 @@
     .first-only {
       background: var(--moe-gold-light);
       border-color: rgba(176,141,44,0.45);
-      color: #6F571B;
+      color: var(--moe-gold);
     }
 
     .no-exam {
-      color: #98A2B3;
+      color: var(--muted);
       font-weight: 800;
       font-size: 1.2rem;
     }
@@ -216,7 +277,7 @@
       justify-content: center;
       align-items: center;
       padding: 14px 16px;
-      color: #6F571B;
+      color: var(--moe-gold);
       background: var(--moe-gold-light);
       font-size: 0.92rem;
       font-weight: 800;
@@ -224,7 +285,7 @@
     }
 
     .search-panel {
-      background: #fff;
+      background: var(--card);
       border: 1px solid var(--border);
       border-radius: 22px;
       padding: 18px;
@@ -232,28 +293,59 @@
     }
 
     .search-box {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
       gap: 10px;
-      margin-bottom: 18px;
+      margin-bottom: 12px;
       background: var(--moe-green-light);
       padding: 10px;
       border-radius: 16px;
       border: 1px solid var(--border);
     }
 
+    .field-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field-wrap label {
+      color: var(--moe-green-dark);
+      font-size: 0.82rem;
+      font-weight: 900;
+      padding-inline: 4px;
+    }
+
     input[type="text"] {
-      flex: 1;
+      width: 100%;
       padding: 14px 16px;
       border: 2px solid transparent;
       border-radius: 12px;
-      font-size: 1.1rem;
+      font-size: 1.03rem;
       font-family: inherit;
-      direction: ltr;
       text-align: center;
-      letter-spacing: 2px;
       transition: 0.2s ease;
-      background: var(--white);
+      background: var(--input-bg);
       color: var(--text);
+      font-weight: 700;
+    }
+
+    #idInput {
+      direction: ltr;
+      letter-spacing: 2px;
+    }
+
+    #nameInput {
+      direction: rtl;
+      letter-spacing: 0;
+    }
+
+    .search-hint {
+      margin: 0 4px 16px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.7;
+      font-weight: 700;
     }
 
     input[type="text"]:focus {
@@ -284,7 +376,7 @@
       border-radius: 18px;
       overflow: hidden;
       border: 2px solid var(--border);
-      background: #fff;
+      background: var(--card);
     }
 
     .result-header {
@@ -298,7 +390,7 @@
 
     .result-row {
       display: flex;
-      border-bottom: 1px solid #EEF4F0;
+      border-bottom: 1px solid var(--line);
     }
 
     .result-row:last-child { border-bottom: none; }
@@ -322,13 +414,47 @@
       font-weight: 700;
     }
 
+    .matches {
+      display: none;
+      margin-top: 14px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--card);
+    }
+
+    .matches-header {
+      background: var(--moe-green-lighter);
+      color: var(--moe-green-dark);
+      padding: 13px 16px;
+      font-weight: 900;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .match-card {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 0.8fr 0.8fr;
+      gap: 10px;
+      align-items: center;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .match-card:hover { background: var(--moe-green-lighter); }
+    .match-card:last-child { border-bottom: none; }
+
+    .match-name { font-weight: 900; color: var(--text); line-height: 1.7; }
+    .match-meta { color: var(--muted); font-weight: 800; font-size: 0.9rem; }
+
     .seat-number {
       font-size: 2.25rem;
       font-weight: 900;
       color: var(--moe-green-dark);
       text-align: center;
       padding: 22px;
-      background: linear-gradient(180deg, #F7FBF8, var(--moe-green-light));
+      background: linear-gradient(180deg, var(--card-soft), var(--moe-green-light));
       border-top: 2px solid var(--border);
     }
 
@@ -345,9 +471,9 @@
       text-align: center;
       padding: 18px;
       color: var(--danger);
-      background: #FDF0EE;
+      background: var(--danger-bg);
       border-radius: 14px;
-      border: 2px solid #F5C6C0;
+      border: 2px solid var(--danger-border);
       font-size: 0.95rem;
       font-weight: 800;
       margin-bottom: 16px;
@@ -364,21 +490,62 @@
       line-height: 1.8;
     }
 
+    @media (max-width: 900px) {
+      body { padding: 16px; }
+      .container { max-width: 100%; padding: 28px 18px; }
+      .search-box { grid-template-columns: 1fr 1fr; }
+      .search-button { grid-column: 1 / -1; width: 100%; }
+      .match-card { grid-template-columns: 1fr 0.8fr 0.7fr 0.7fr; }
+      table { min-width: 700px; }
+    }
+
     @media (max-width: 640px) {
-      body { padding: 12px; }
-      .container { padding: 24px 14px; border-radius: 22px; }
-      .tabs { grid-template-columns: 1fr; }
-      .search-box { flex-direction: column; }
+      body { padding: 10px; align-items: stretch; }
+      .container { padding: 72px 12px 20px; border-radius: 20px; min-height: calc(100vh - 20px); }
+      .theme-toggle { top: 14px; left: 14px; padding: 9px 12px; font-size: 0.86rem; }
+      .ministry-logo { width: 128px; max-width: 64%; }
+      .brand { margin-bottom: 16px; }
+      .brand h1 { font-size: 1.35rem; line-height: 1.55; }
+      .brand p { font-size: 0.9rem; }
+      .tabs { grid-template-columns: 1fr; gap: 8px; margin: 16px 0; }
+      .tab-button { padding: 13px 12px; }
+      .schedule-title h2 { font-size: 1.08rem; }
+      .schedule-title span { font-size: 0.82rem; }
+      .table-wrap { border-radius: 0; -webkit-overflow-scrolling: touch; }
+      table { min-width: 620px; font-size: 0.9rem; }
+      th, td { padding: 12px 9px; }
+      tbody th { width: 118px; }
+      .subject { min-width: 88px; padding: 8px 9px; font-size: 0.86rem; }
+      .schedule-note { font-size: 0.84rem; text-align: center; line-height: 1.7; }
+      .search-panel { padding: 12px; border-radius: 18px; }
+      .search-box { grid-template-columns: 1fr; padding: 9px; }
       .search-button { width: 100%; }
-      .result-label { width: 105px; min-width: 105px; }
-      .seat-number { font-size: 2rem; }
-      .school-name { border-radius: 16px; }
+      .result-row { flex-direction: column; }
+      .result-label { width: 100%; min-width: 0; padding: 10px 12px; }
+      .result-value { padding: 12px; }
+      .match-card { grid-template-columns: 1fr; gap: 4px; }
+      .seat-number { font-size: 2rem; padding: 18px; }
+      .school-name { border-radius: 16px; font-size: 0.86rem; padding: 8px 12px; }
+      .footer-credit { font-size: 0.84rem; }
+    }
+
+    @media (max-width: 420px) {
+      .container { padding-inline: 10px; }
+      .theme-toggle span:last-child { display: none; }
+      .theme-toggle { width: 42px; height: 42px; justify-content: center; padding: 0; }
+      table { min-width: 580px; }
+      .brand h1 { font-size: 1.22rem; }
     }
   </style>
 </head>
 <body>
 
 <div class="container">
+  <button class="theme-toggle" id="themeToggle" type="button" onclick="toggleTheme()" aria-label="تبديل الوضع">
+    <span class="theme-icon" id="themeIcon">🌙</span>
+    <span id="themeText">الوضع الداكن</span>
+  </button>
+
   <div class="brand">
     <!-- ضع شعار وزارة التعليم في نفس مجلد هذا الملف باسم: moe-logo.png -->
     <img class="ministry-logo" src="moe-logo.png" alt="شعار وزارة التعليم السعودية" />
@@ -445,11 +612,21 @@
   <section class="tab-content" id="inquiry-tab">
     <div class="search-panel">
       <div class="search-box">
-        <input type="text" id="idInput" placeholder="رقم الهوية" inputmode="numeric" />
+        <div class="field-wrap">
+          <label for="idInput">البحث برقم الهوية</label>
+          <input type="text" id="idInput" placeholder="اكتب رقم الهوية" inputmode="numeric" autocomplete="off" />
+        </div>
+        <div class="field-wrap">
+          <label for="nameInput">البحث بالاسم أو جزء منه</label>
+          <input type="text" id="nameInput" placeholder="مثال: أحمد أو محمد" autocomplete="off" />
+        </div>
         <button class="search-button" onclick="search()">بحث</button>
       </div>
+      <div class="search-hint">يمكن البحث برقم الهوية مباشرة، أو كتابة الاسم/جزء منه. عند البحث بالاسم لن يظهر رقم الهوية في النتائج.</div>
 
-      <div class="error" id="error">لم يتم العثور على بيانات لهذا الرقم</div>
+      <div class="error" id="error">لم يتم العثور على بيانات مطابقة</div>
+
+      <div class="matches" id="matches"></div>
 
       <div class="result" id="result">
         <div class="result-header">بيانات الطالب</div>
@@ -483,6 +660,24 @@
 </div>
 
 <script>
+const savedTheme = localStorage.getItem('portalTheme') || 'light';
+document.body.dataset.theme = savedTheme;
+
+function updateThemeButton() {
+  const isDark = document.body.dataset.theme === 'dark';
+  document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
+  document.getElementById('themeText').textContent = isDark ? 'الوضع الفاتح' : 'الوضع الداكن';
+}
+
+function toggleTheme() {
+  const nextTheme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.body.dataset.theme = nextTheme;
+  localStorage.setItem('portalTheme', nextTheme);
+  updateThemeButton();
+}
+
+document.addEventListener('DOMContentLoaded', updateThemeButton);
+
 const students = [
   ["1154004681", "أحمد بن عقيل بن احمد الناصر", "1", "1", "الأول الثانوي", "1"],
   ["04585021", "اسعد عارف علي حزام هزاع", "2", "1", "الأول الثانوي", "1"],
@@ -1045,31 +1240,95 @@ function normalizeId(value) {
   return value.trim().replace(/\s/g, '').replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
 }
 
-function search() {
-  const id = normalizeId(document.getElementById('idInput').value);
-  const result = document.getElementById('result');
-  const error = document.getElementById('error');
-  result.style.display = 'none';
-  error.style.display = 'none';
+function normalizeArabic(value) {
+  return value
+    .trim()
+    .replace(/[إأآا]/g, 'ا')
+    .replace(/ى/g, 'ي')
+    .replace(/ة/g, 'ه')
+    .replace(/ؤ/g, 'و')
+    .replace(/ئ/g, 'ي')
+    .replace(/ـ/g, '')
+    .replace(/\s+/g, ' ');
+}
 
-  if (!id) return;
+function hideOutputs() {
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('matches').style.display = 'none';
+  document.getElementById('matches').innerHTML = '';
+  document.getElementById('error').style.display = 'none';
+}
 
-  const student = students.find(s => s[0] === id);
-
-  if (!student) {
-    error.style.display = 'block';
-    return;
-  }
-
+function showStudent(student) {
   document.getElementById('r-name').textContent = student[1];
   document.getElementById('r-class').textContent = student[4];
   document.getElementById('r-semester').textContent = student[3];
   document.getElementById('r-group').textContent = student[5];
   document.getElementById('r-seat').textContent = student[2];
-  result.style.display = 'block';
+  document.getElementById('result').style.display = 'block';
+  window.scrollTo({ top: document.getElementById('result').offsetTop - 20, behavior: 'smooth' });
 }
 
+function showNameMatches(matches) {
+  const matchesBox = document.getElementById('matches');
+  const countText = matches.length === 1 ? 'نتيجة واحدة' : matches.length + ' نتائج';
+  matchesBox.innerHTML = `
+    <div class="matches-header">نتائج البحث بالاسم: ${countText} — لا يتم عرض رقم الهوية</div>
+    ${matches.map((student, index) => `
+      <div class="match-card" onclick="showStudent(students[${students.indexOf(student)}])">
+        <div class="match-name">${index + 1}. ${student[1]}</div>
+        <div class="match-meta">الصف: ${student[4]}</div>
+        <div class="match-meta">الفصل: ${student[3]}</div>
+        <div class="match-meta">اللجنة: ${student[5]}</div>
+      </div>
+    `).join('')}
+  `;
+  matchesBox.style.display = 'block';
+}
+
+function search() {
+  const id = normalizeId(document.getElementById('idInput').value);
+  const name = normalizeArabic(document.getElementById('nameInput').value);
+  hideOutputs();
+
+  if (!id && !name) return;
+
+  if (id) {
+    const student = students.find(s => s[0] === id);
+    if (!student) {
+      document.getElementById('error').style.display = 'block';
+      return;
+    }
+    showStudent(student);
+    return;
+  }
+
+  const matches = students.filter(student => normalizeArabic(student[1]).includes(name));
+  if (matches.length === 0) {
+    document.getElementById('error').style.display = 'block';
+    return;
+  }
+
+  if (matches.length === 1) {
+    showStudent(matches[0]);
+  } else {
+    showNameMatches(matches);
+  }
+}
+
+document.getElementById('idInput').addEventListener('input', function() {
+  if (this.value.trim()) document.getElementById('nameInput').value = '';
+});
+
+document.getElementById('nameInput').addEventListener('input', function() {
+  if (this.value.trim()) document.getElementById('idInput').value = '';
+});
+
 document.getElementById('idInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') search();
+});
+
+document.getElementById('nameInput').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') search();
 });
 </script>

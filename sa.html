@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>متابعة أعمال اختبارات الفصل الثاني للعام الدراسي ١٤٤٧هـ</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg1: #f2fbf8;
@@ -40,7 +41,7 @@
 
     body {
       margin: 0;
-      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      font-family: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, Arial, sans-serif;
       color: var(--text);
       min-height: 100vh;
       background:
@@ -406,6 +407,9 @@
       <div class="top-actions">
         <button class="action-btn" id="themeBtn" type="button">🌙 الوضع الداكن</button>
         <button class="action-btn" id="printBtn" type="button">🖨️ طباعة</button>
+        <button class="action-btn" id="backupBtn" type="button">💾 حفظ نسخة احتياطية</button>
+        <button class="action-btn" id="restoreBtn" type="button">📤 رفع نسخة احتياطية</button>
+        <input id="restoreFile" type="file" accept="application/json,.json" hidden />
         <button class="action-btn" id="resetBtn" type="button">↺ تصفير المتابعة</button>
       </div>
 
@@ -553,6 +557,56 @@
       localStorage.setItem(storageKey, JSON.stringify(state));
     }
 
+    function downloadBackup() {
+      const theme = localStorage.getItem(themeKey) || "light";
+      const backup = {
+        type: "exam_followup_backup",
+        version: 1,
+        title: "متابعة أعمال اختبارات الفصل الثاني للعام الدراسي ١٤٤٧هـ",
+        exportedAt: new Date().toISOString(),
+        storageKey,
+        theme,
+        state
+      };
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      const stamp = new Date().toISOString().slice(0, 10);
+      a.href = url;
+      a.download = `نسخة_احتياطية_متابعة_الاختبارات_${stamp}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function restoreBackupFile(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = event => {
+        try {
+          const backup = JSON.parse(event.target.result);
+          if (!backup || backup.type !== "exam_followup_backup" || typeof backup.state !== "object") {
+            alert("ملف النسخة الاحتياطية غير صحيح.");
+            return;
+          }
+          if (confirm("سيتم استبدال بيانات المتابعة الحالية بالنسخة الاحتياطية. هل تريد المتابعة؟")) {
+            state = backup.state || {};
+            saveState();
+            if (backup.theme === "dark" || backup.theme === "light") applyTheme(backup.theme);
+            renderFollowTable();
+            renderStats();
+            alert("تم رفع النسخة الاحتياطية واستعادة بيانات المتابعة بنجاح.");
+          }
+        } catch (error) {
+          alert("تعذر قراءة ملف النسخة الاحتياطية. تأكد أنه ملف JSON صحيح.");
+        } finally {
+          document.getElementById("restoreFile").value = "";
+        }
+      };
+      reader.readAsText(file, "UTF-8");
+    }
+
     function percent(done, total) {
       return total ? Math.round((done / total) * 100) : 0;
     }
@@ -670,6 +724,9 @@
       applyTheme(current === "dark" ? "light" : "dark");
     });
     document.getElementById("printBtn").addEventListener("click", () => window.print());
+    document.getElementById("backupBtn").addEventListener("click", downloadBackup);
+    document.getElementById("restoreBtn").addEventListener("click", () => document.getElementById("restoreFile").click());
+    document.getElementById("restoreFile").addEventListener("change", e => restoreBackupFile(e.target.files[0]));
     document.getElementById("resetBtn").addEventListener("click", () => {
       if (confirm("هل تريد تصفير جميع علامات المتابعة؟")) {
         state = {};
